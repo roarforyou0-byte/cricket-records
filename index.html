@@ -70,7 +70,11 @@ min-width:45px;
 
 let players =
 JSON.parse(localStorage.getItem("players")) || [];
+let captain =
+localStorage.getItem("captain") || "";
 
+let viceCaptain =
+localStorage.getItem("viceCaptain") || "";
 function save(){
 localStorage.setItem(
 "players",
