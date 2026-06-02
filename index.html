@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Cricket Records Hub</title>
 
 <style>
 body{
-font-family:Arial;
+font-family:Arial,sans-serif;
 background:#f4f4f4;
 padding:15px;
 }
@@ -16,25 +16,31 @@ padding:15px;
 background:white;
 padding:15px;
 margin-bottom:15px;
-border-radius:10px;
-box-shadow:0 2px 5px rgba(0,0,0,.1);
+border-radius:12px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
 }
 
-input,button{
+input{
 padding:10px;
-margin:5px;
+width:60%;
 }
 
 button{
+padding:10px;
+margin:4px;
+border:none;
+border-radius:8px;
 background:#2196f3;
 color:white;
-border:none;
-border-radius:6px;
 }
 
 .player{
-padding:8px;
+padding:12px;
 border-bottom:1px solid #ddd;
+}
+
+.scoreBtns button{
+min-width:45px;
 }
 </style>
 </head>
@@ -44,7 +50,7 @@ border-bottom:1px solid #ddd;
 <div class="card">
 <h1>🏏 Cricket Records Hub</h1>
 <p><b>Respect the game. Trust the team. Own the moment.</b></p>
-<p>Captains: Manish & Aryan Nain</p>
+<p><b>Captains:</b> Manish & Aryan Nain</p>
 </div>
 
 <div class="card">
@@ -52,31 +58,18 @@ border-bottom:1px solid #ddd;
 
 <input id="playerName" placeholder="Player Name">
 
-<button onclick="addPlayer()">
-Add
-</button>
+<button onclick="addPlayer()">Add</button>
 </div>
 
 <div class="card">
 <h2>Players</h2>
-
 <div id="players"></div>
 </div>
 
 <script>
 
-let players=
-JSON.parse(localStorage.getItem("players"))
-||[
-{name:"Manish",runs:0,balls:0},
-{name:"Manish Nain",runs:0,balls:0},
-{name:"Deepak Kumar Nain",runs:0,balls:0},
-{name:"Aryan Kumar Nain",runs:0,balls:0},
-{name:"Kapil Nain",runs:0,balls:0},
-{name:"Badal",runs:0,balls:0},
-{name:"Monty",runs:0,balls:0},
-{name:"Sagar Chaudhary",runs:0,balls:0}
-];
+let players =
+JSON.parse(localStorage.getItem("players")) || [];
 
 function save(){
 localStorage.setItem(
@@ -91,6 +84,10 @@ let html="";
 
 players.forEach((p,i)=>{
 
+if(!p.runs) p.runs=0;
+if(!p.balls) p.balls=0;
+if(!p.wickets) p.wickets=0;
+
 let sr=0;
 
 if(p.balls>0){
@@ -100,48 +97,60 @@ sr=((p.runs/p.balls)*100).toFixed(2);
 html+=`
 <div class="player">
 
-<b>${p.name}</b><br>
+<b>${p.name}</b><br><br>
 
 Runs: ${p.runs}
 |
 Balls: ${p.balls}
 |
 SR: ${sr}
+|
+Wickets: ${p.wickets}
 
 <br><br>
 
-<button onclick="addRun(${i})">
-+1 Run
-</button>
+<div class="scoreBtns">
 
-<button onclick="addBall(${i})">
-+1 Ball
-</button>
+<button onclick="score(${i},0)">0</button>
+
+<button onclick="score(${i},1)">1</button>
+
+<button onclick="score(${i},2)">2</button>
+
+<button onclick="score(${i},3)">3</button>
+
+<button onclick="score(${i},4)">4</button>
+
+<button onclick="score(${i},6)">6</button>
+
+<button onclick="wicket(${i})">W</button>
 
 <button onclick="removePlayer(${i})">
 Delete
 </button>
 
 </div>
+
+</div>
 `;
 });
 
-document.getElementById("players")
-.innerHTML=html;
+document.getElementById("players").innerHTML=html;
 }
 
 function addPlayer(){
 
-let name=
+let name =
 document.getElementById("playerName")
 .value.trim();
 
-if(!name)return;
+if(!name) return;
 
 players.push({
 name:name,
 runs:0,
-balls:0
+balls:0,
+wickets:0
 });
 
 save();
@@ -151,20 +160,28 @@ document.getElementById("playerName")
 .value="";
 }
 
-function addRun(i){
-players[i].runs++;
+function score(i,runs){
+
+players[i].runs += runs;
+players[i].balls++;
+
 save();
 render();
 }
 
-function addBall(i){
+function wicket(i){
+
 players[i].balls++;
+players[i].wickets++;
+
 save();
 render();
 }
 
 function removePlayer(i){
+
 players.splice(i,1);
+
 save();
 render();
 }
