@@ -1,31 +1,143 @@
 <!DOCTYPE html>
 <html>
 <head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cricket Records Hub</title>
+
+<style>
+body{
+font-family:Arial,sans-serif;
+background:#f4f6f8;
+margin:0;
+padding:20px;
+}
+
+.card{
+background:white;
+padding:15px;
+border-radius:12px;
+margin-bottom:15px;
+box-shadow:0 2px 8px rgba(0,0,0,.1);
+}
+
+h1{
+margin-top:0;
+}
+
+input,button{
+padding:10px;
+margin:5px;
+border-radius:8px;
+border:1px solid #ccc;
+}
+
+button{
+background:#1e88e5;
+color:white;
+border:none;
+}
+
+.player{
+padding:8px;
+border-bottom:1px solid #eee;
+}
+</style>
 </head>
+
 <body>
 
+<div class="card">
 <h1>🏏 Cricket Records Hub</h1>
+<p><b>Respect the game. Trust the team. Own the moment.</b></p>
 
-<p>Respect the game. Trust the team. Own the moment.</p>
+<p><b>Captains:</b> Manish & Aryan Nain</p>
+</div>
 
-<h2>Captains</h2>
-<ul>
-<li>Manish</li>
-<li>Aryan Nain</li>
-</ul>
+<div class="card">
+<h2>Add Player</h2>
 
+<input id="playerName" placeholder="Player Name">
+
+<button onclick="addPlayer()">
+Add Player
+</button>
+</div>
+
+<div class="card">
 <h2>Players</h2>
-<ul>
-<li>Manish</li>
-<li>Manish Nain</li>
-<li>Deepak Kumar Nain</li>
-<li>Aryan Kumar Nain</li>
-<li>Kapil Nain</li>
-<li>Badal</li>
-<li>Monty</li>
-<li>Sagar Chaudhary</li>
-</ul>
+
+<div id="players"></div>
+</div>
+
+<script>
+
+let players =
+JSON.parse(localStorage.getItem("players"))
+|| [
+"Manish",
+"Manish Nain",
+"Deepak Kumar Nain",
+"Aryan Kumar Nain",
+"Kapil Nain",
+"Badal",
+"Monty",
+"Sagar Chaudhary"
+];
+
+function save(){
+localStorage.setItem(
+"players",
+JSON.stringify(players)
+);
+}
+
+function render(){
+
+let html="";
+
+players.forEach((p,i)=>{
+html+=`
+<div class="player">
+${p}
+<button onclick="removePlayer(${i})">
+Delete
+</button>
+</div>
+`;
+});
+
+document.getElementById("players").innerHTML=html;
+}
+
+function addPlayer(){
+
+let name=
+document.getElementById("playerName")
+.value.trim();
+
+if(!name) return;
+
+players.push(name);
+
+save();
+render();
+
+document.getElementById("playerName")
+.value="";
+}
+
+function removePlayer(i){
+
+players.splice(i,1);
+
+save();
+render();
+}
+
+render();
+
+</script>
 
 </body>
 </html>
