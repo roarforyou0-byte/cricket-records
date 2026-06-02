@@ -7,40 +7,34 @@
 
 <style>
 body{
-font-family:Arial,sans-serif;
-background:#f4f6f8;
-margin:0;
-padding:20px;
+font-family:Arial;
+background:#f4f4f4;
+padding:15px;
 }
 
 .card{
 background:white;
 padding:15px;
-border-radius:12px;
 margin-bottom:15px;
-box-shadow:0 2px 8px rgba(0,0,0,.1);
-}
-
-h1{
-margin-top:0;
+border-radius:10px;
+box-shadow:0 2px 5px rgba(0,0,0,.1);
 }
 
 input,button{
 padding:10px;
 margin:5px;
-border-radius:8px;
-border:1px solid #ccc;
 }
 
 button{
-background:#1e88e5;
+background:#2196f3;
 color:white;
 border:none;
+border-radius:6px;
 }
 
 .player{
 padding:8px;
-border-bottom:1px solid #eee;
+border-bottom:1px solid #ddd;
 }
 </style>
 </head>
@@ -50,8 +44,7 @@ border-bottom:1px solid #eee;
 <div class="card">
 <h1>🏏 Cricket Records Hub</h1>
 <p><b>Respect the game. Trust the team. Own the moment.</b></p>
-
-<p><b>Captains:</b> Manish & Aryan Nain</p>
+<p>Captains: Manish & Aryan Nain</p>
 </div>
 
 <div class="card">
@@ -60,7 +53,7 @@ border-bottom:1px solid #eee;
 <input id="playerName" placeholder="Player Name">
 
 <button onclick="addPlayer()">
-Add Player
+Add
 </button>
 </div>
 
@@ -72,17 +65,17 @@ Add Player
 
 <script>
 
-let players =
+let players=
 JSON.parse(localStorage.getItem("players"))
-|| [
-"Manish",
-"Manish Nain",
-"Deepak Kumar Nain",
-"Aryan Kumar Nain",
-"Kapil Nain",
-"Badal",
-"Monty",
-"Sagar Chaudhary"
+||[
+{name:"Manish",runs:0,balls:0},
+{name:"Manish Nain",runs:0,balls:0},
+{name:"Deepak Kumar Nain",runs:0,balls:0},
+{name:"Aryan Kumar Nain",runs:0,balls:0},
+{name:"Kapil Nain",runs:0,balls:0},
+{name:"Badal",runs:0,balls:0},
+{name:"Monty",runs:0,balls:0},
+{name:"Sagar Chaudhary",runs:0,balls:0}
 ];
 
 function save(){
@@ -97,17 +90,44 @@ function render(){
 let html="";
 
 players.forEach((p,i)=>{
+
+let sr=0;
+
+if(p.balls>0){
+sr=((p.runs/p.balls)*100).toFixed(2);
+}
+
 html+=`
 <div class="player">
-${p}
+
+<b>${p.name}</b><br>
+
+Runs: ${p.runs}
+|
+Balls: ${p.balls}
+|
+SR: ${sr}
+
+<br><br>
+
+<button onclick="addRun(${i})">
++1 Run
+</button>
+
+<button onclick="addBall(${i})">
++1 Ball
+</button>
+
 <button onclick="removePlayer(${i})">
 Delete
 </button>
+
 </div>
 `;
 });
 
-document.getElementById("players").innerHTML=html;
+document.getElementById("players")
+.innerHTML=html;
 }
 
 function addPlayer(){
@@ -116,9 +136,13 @@ let name=
 document.getElementById("playerName")
 .value.trim();
 
-if(!name) return;
+if(!name)return;
 
-players.push(name);
+players.push({
+name:name,
+runs:0,
+balls:0
+});
 
 save();
 render();
@@ -127,10 +151,20 @@ document.getElementById("playerName")
 .value="";
 }
 
+function addRun(i){
+players[i].runs++;
+save();
+render();
+}
+
+function addBall(i){
+players[i].balls++;
+save();
+render();
+}
+
 function removePlayer(i){
-
 players.splice(i,1);
-
 save();
 render();
 }
