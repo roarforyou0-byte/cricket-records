@@ -205,7 +205,35 @@ render();
 }
 
 render();
+function minusRun(i){
 
+if(players[i].runs>0){
+players[i].runs--;
+}
+
+save();
+render();
+}
+
+function minusBall(i){
+
+if(players[i].balls>0){
+players[i].balls--;
+}
+
+save();
+render();
+}
+
+function minusWicket(i){
+
+if(players[i].wickets>0){
+players[i].wickets--;
+}
+
+save();
+render();
+}
 </script>
 </body>
 </html>
