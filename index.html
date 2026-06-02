@@ -206,7 +206,29 @@ render();
 }
 
 function removePlayer(i){
+function setCaptain(i){
 
+captain = players[i].name;
+
+localStorage.setItem(
+"captain",
+captain
+);
+
+render();
+}
+
+function setViceCaptain(i){
+
+viceCaptain = players[i].name;
+
+localStorage.setItem(
+"viceCaptain",
+viceCaptain
+);
+
+render();
+}
 players.splice(i,1);
 
 save();
