@@ -109,25 +109,28 @@ Wickets: ${p.wickets}
 
 <br><br>
 
-<div class="scoreBtns">
+<div <div class="scoreBtns">
 
 <button onclick="score(${i},0)">0</button>
-
 <button onclick="score(${i},1)">1</button>
-
 <button onclick="score(${i},2)">2</button>
-
 <button onclick="score(${i},3)">3</button>
-
 <button onclick="score(${i},4)">4</button>
-
 <button onclick="score(${i},6)">6</button>
 
 <button onclick="wicket(${i})">W</button>
 
+<br><br>
+
+<button onclick="minusRun(${i})">-Run</button>
+<button onclick="minusBall(${i})">-Ball</button>
+<button onclick="minusWicket(${i})">-W</button>
+
 <button onclick="removePlayer(${i})">
 Delete
 </button>
+
+</div>
 
 </div>
 
